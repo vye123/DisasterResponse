@@ -68,12 +68,6 @@ def tokenize(text):
     tokens = word_tokenize(text)
     tokens = [w for w in tokens if w not in stopwords.words("english")]
     
-    #tokens = [WordNetLemmatizer().lemmatize(token, pos='v') for token in tokens]
-    
-    # extract root form of words
-   # words = [WordNetLemmatizer().lemmatize(word, pos='v') for word in words]
-
-    #tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
     clean_tokens = []
@@ -114,19 +108,23 @@ def build_model():
 
 
 def evaluate_model(model, X_test, Y_test, category_names):
+    
     """
+    Evaluate the model, print classification report and accuracy score
+    
     Input:
     model: The trained model
     X_test: Test features
     Y_test: Test targets
     category_names: Target labels
+    
+    Output:
+    Classification report
+    Accurary score
+    
     """
 
     y_pred = model.predict(X_test)
-
-    # Print accuracy, precision, recall and f1_score for each categories
-    #for i in range(0, len(category_names)):
-    #   print(category_names[i])
     
     # print classification report
     print(classification_report(Y_test.values, y_pred, target_names=category_names))
@@ -134,13 +132,18 @@ def evaluate_model(model, X_test, Y_test, category_names):
     # print accuracy score
     print('Accuracy: {}'.format(np.mean(Y_test.values == y_pred)))
     
-
 def save_model(model, model_filepath):
     
     """
+    Save the model to a file
+    
     Input:
-        model: sklearn.model_selection.GridSearchCV. It contains a sklearn estimator.
+        model: The trained model with GridSearchCV
         model_filepath: The filepath where the pickel file will be saved at.
+        
+    Output:
+        The model file
+        
     """
     pickle.dump(model, open(model_filepath, 'wb'))
 

@@ -12,6 +12,7 @@ def load_data(messages_filepath, categories_filepath):
         categories_file -> categories CSV file
     Output:
         df -> a merged dataframe that includes all messages and categories
+        
     """
     
     messages = pd.read_csv(messages_filepath)
@@ -20,8 +21,6 @@ def load_data(messages_filepath, categories_filepath):
     # merge data sets
     df = messages.merge(categories,on='id')
     return df 
-
-
 
 def clean_data(df):
     
@@ -32,6 +31,7 @@ def clean_data(df):
         df -> The merged data frame from load_file function
     Output:
         df -> A cleaned data frame ready to be saved to Database
+        
     """
     
     # Split the categories
@@ -76,6 +76,10 @@ def save_data(df, database_filename):
     Input:
         df -> The cleaned data frame from clean_data function
         database_filename -> Database name
+    
+    Output:
+        A save database that contains the cleaned data frame in a table
+        
     """
     
     engine = create_engine('sqlite:///'+ database_filename)

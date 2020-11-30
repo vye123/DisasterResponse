@@ -26,11 +26,11 @@ def tokenize(text):
     return clean_tokens
 
 # load data
-engine = create_engine('sqlite:///../data/YourDatabaseName.db')
-df = pd.read_sql_table('YourTableName', engine)
+engine = create_engine('sqlite:///../data/DisasterResponse.db')
+df = pd.read_sql_table('DisasterResponse_table', engine)
 
 # load model
-model = joblib.load("../models/your_model_name.pkl")
+model = joblib.load("../models/Classifier.pkl")
 
 
 # index webpage displays cool visuals and receives user input text for model
@@ -45,6 +45,14 @@ def index():
     
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
+    category_name = df.iloc[:, 4:].columns
+    val = df.iloc[:, 4:] != 0
+    category_value = val.sum().values
+
+    category_summary = df.iloc[:, 4:].sum()
+    top_category = category_summary.sort_values(ascending=False)[1:11]
+    top_category_names = list(top_category.index)
+    
     graphs = [
         {
             'data': [
@@ -61,6 +69,44 @@ def index():
                 },
                 'xaxis': {
                     'title': "Genre"
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=category_name,
+                    y=category_value
+                )
+            ],
+
+            'layout': {
+                'title': 'Message Categories Distritution',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Categories",
+                    'tickangle': -40,
+                    'automargin':True
+                }
+            }
+        },
+        {
+            'data': [
+                Bar(
+                    x=top_category_names,
+                    y=top_category
+                )
+            ],
+
+            'layout': {
+                'title': 'Top 10 Categories',
+                'yaxis': {
+                    'title': "Count"
+                },
+                'xaxis': {
+                    'title': "Categories"
                 }
             }
         }
