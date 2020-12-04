@@ -1,14 +1,14 @@
 Table of Contents
 
-1. Installations
+1.  Installations
 
-2. Project Motivation
+2.  Project Motivation
 
-3. File Descriptions
+3.  File Descriptions
 
-4. Results
+4.  Results
 
-5. Licensing, Authors, Acknowledgements
+5.  Licensing, Authors, Acknowledgements
 
 Installation
 
@@ -109,9 +109,9 @@ To see the results, please run the following commands in sequence:
 >   Here is the screen snapshot to show that the program runs successfully with
 >   no error message, the cleaned data is now saved to DisasterResponse.db.
 
-![Text Description automatically generated](process_data.jpg)
+![Text Description automatically generated](media/6eb0b659d597b31a16b765cc8a0e59ac.jpg)
 
-2. Go to “models” subdirectory, and type:
+1.  Go to “models” subdirectory, and type:
 
 >   python train_classifier.py ../data/DisasterResponse.db Classifier.pkl
 
@@ -120,23 +120,23 @@ To see the results, please run the following commands in sequence:
 >   category, and the accuracy of the model. Finally, the model is saved to a
 >   pickle file – Classifier.pkl.
 
-![Text Description automatically generated](training1.jpg)
+![Text Description automatically generated](media/0ab7f7a706a0f70203c5a6a6fee80036.jpg)
 
-![A picture containing text, scoreboard Description automatically generated](training2.jpg)
+![A picture containing text, scoreboard Description automatically generated](media/aed22597a132fec5ee3c062d060c5997.jpg)
 
-![A picture containing text, scoreboard Description automatically generated](training3.jpg)
+![A picture containing text, scoreboard Description automatically generated](media/29b408600196f4814117aa457e2065e3.jpg)
 
 1.  Go to “app” subdirectory, and type:
 
     Python run.py
 
-![Text Description automatically generated](run.jpg)
+![Text Description automatically generated](media/5a45cccf1d7dcacab2b27843b07eb284.jpg)
 
 Open another Terminal Window, and type:
 
 env \| grep WORK
 
-![](env.jpg)
+![](media/f2086d3393c7cce886c534269c105eb1.jpg)
 
 Now, in a new web browser window, type in the following URL:
 
@@ -144,18 +144,18 @@ Now, in a new web browser window, type in the following URL:
 
 The web page should show up:
 
-![Graphical user interface, text, application Description automatically generated](web1.jpg)
+![Graphical user interface, text, application Description automatically generated](media/93b442e3e1739335980c27393b5c02fc.jpg)
 
-![Chart, bar chart Description automatically generated](web2.jpg)
+![Chart, bar chart Description automatically generated](media/1e6433ef9751a8ba4a1f6a4362847500.jpg)
 
-![Chart Description automatically generated](web3.jpg)
+![Chart Description automatically generated](media/d81b8de0cbec823fbaa2391bbe6903e2.jpg)
 
-![Chart, bar chart Description automatically generated](web4.jpg)
+![Chart, bar chart Description automatically generated](media/e3655e0f534d622bc04a1d2270b09a5b.jpg)
 
 Type “we need more food” in the message box, click on “Classify Message” button,
 then the page will be updated to show the result:
 
-![Table Description automatically generated](web5.jpg)
+![Table Description automatically generated](media/8ea137c06d4003d0787e9f78bcd62219.jpg)
 
 Licensing, Authors, Acknowledgements
 
