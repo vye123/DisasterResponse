@@ -61,6 +61,10 @@ Here is the structure of the project:
 
 >   o DisasterResponse.db \# database that has cleaned data
 
+\- img \# This directory includes all the origianl image files I captured
+
+\- Media  \# This directory includes all the image files used in README
+
 \- Models
 
 >   o train_classifier.py \# Python code to build the model
