@@ -30,9 +30,8 @@ def load_data(database_filepath):
 	    database_filepath: SQL database file
 	
 	    Output:
-	    X pandas_dataframe: Features dataframe
-	    Y pandas_dataframe: Target dataframe
-	    category_names list: Target labels 
+	    X : Features dataframe
+	    Y : Target dataframe
 	    """
 
     engine = create_engine('sqlite:///{}'.format(database_filepath))
@@ -40,9 +39,9 @@ def load_data(database_filepath):
     X = df['message']
     Y = df.iloc[:,4:]
     Y['related']=Y['related'].map(lambda x: 1 if x == 2 else x)
-    category_names = Y.columns
-    return X, Y, category_names
-
+    
+    return X, Y
+    
 
 def tokenize(text):
     
@@ -53,7 +52,8 @@ def tokenize(text):
 	    Messages as text data
 	
 	    Output:
-	    Processed text after normalizing, tokenizing and lemmatizing
+	    clean_tokens: A list of processed text after normalizing, tokenizing and lemmatizing
+        
 	    """
 
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
@@ -90,24 +90,23 @@ def build_model():
         ('vect', CountVectorizer(tokenizer=tokenize)),
         ('tfidf', TfidfTransformer()),
         ('clf', MultiOutputClassifier(
-                            OneVsRestClassifier(LinearSVC())
+                            OneVsRestClassifier(LinearSVC(), n_jobs=-1)
         )
         )
     ])
 
     # Set parameters for gird search
     parameters = {'vect__ngram_range': ((1, 1), (1, 2)),
-                  'vect__max_df': (0.75, 1.0)
+                  'vect__max_df': (0.5, 0.75, 1.0)
                   }
 
     # Set grid search
-    model = GridSearchCV(estimator=pipeline, param_grid=parameters, cv=3, verbose=3)
-
+    model = GridSearchCV(pipeline, param_grid=parameters)
 
     return model
 
 
-def evaluate_model(model, X_test, Y_test, category_names):
+def evaluate_model(model, X_test, Y_test):
     
     """
     Evaluate the model, print classification report and accuracy score
@@ -116,7 +115,6 @@ def evaluate_model(model, X_test, Y_test, category_names):
     model: The trained model
     X_test: Test features
     Y_test: Test targets
-    category_names: Target labels
     
     Output:
     Classification report
@@ -126,11 +124,14 @@ def evaluate_model(model, X_test, Y_test, category_names):
 
     y_pred = model.predict(X_test)
     
-    # print classification report
-    print(classification_report(Y_test.values, y_pred, target_names=category_names))
-
-    # print accuracy score
-    print('Accuracy: {}'.format(np.mean(Y_test.values == y_pred)))
+    i = 0
+    for col in Y_test:
+        print('Feature {}: {}'.format(i + 1, col))
+        print(classification_report(Y_test[col], y_pred[:, i]))
+        i = i + 1
+    accuracy = (y_pred == Y_test.values).mean()
+    print('The model accuracy is {:.3f}'.format(accuracy))
+    
     
 def save_model(model, model_filepath):
     
@@ -152,7 +153,7 @@ def main():
     if len(sys.argv) == 3:
         database_filepath, model_filepath = sys.argv[1:]
         print('Loading data...\n    DATABASE: {}'.format(database_filepath))
-        X, Y, category_names = load_data(database_filepath)
+        X, Y = load_data(database_filepath)
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
         
         print('Building model...')
@@ -162,7 +163,7 @@ def main():
         model.fit(X_train, Y_train)
         
         print('Evaluating model...')
-        evaluate_model(model, X_test, Y_test, category_names)
+        evaluate_model(model, X_test, Y_test)
 
         print('Saving model...\n    MODEL: {}'.format(model_filepath))
         save_model(model, model_filepath)
